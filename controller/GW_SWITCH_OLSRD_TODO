@@ -1,0 +1,19 @@
+===============================================
+TODO list for the gw_switch_olsrd.py controller
+===============================================
+
+- use nicira matches [*] with cookies to delete installed rules instead of
+  keeping track of all the rules internally. e.g. delete all 0x0c (controller)
+  cookies
+
+- parse MID table from OLSR
+
+- remove /24 netmasks assumption
+
+- correspondance between IP and MAC addresses should be done through an OLSR
+  plug-in
+
+
+[*] https://github.com/noxrepo/pox/issues/71
+
+

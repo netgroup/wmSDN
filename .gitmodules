@@ -1,0 +1,9 @@
+[submodule "olsrd"]
+	path = olsrd
+	url = http://olsr.org/git/olsrd.git
+[submodule "pox"]
+	path = pox
+	url = git://github.com/noxrepo/pox.git
+[submodule "openvswitch"]
+	path = openvswitch
+	url = git://openvswitch.org/openvswitch
