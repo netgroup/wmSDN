@@ -1,9 +1,23 @@
+# vim:ts=2:expandtab:shiftwidth=2
 #
-# vim:ts=4:expandtab
-# CORE
-# Copyright (c)2010-2012 the Boeing Company.
-# See the LICENSE file included in this distribution.
+#  Copyright 2013 Claudio Pisa, Andrea Detti
 #
+#  This file is part of wmSDN
+#
+#  wmSDN is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  wmSDN is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with wmSDN.  If not, see <http://www.gnu.org/licenses/>.
+#
+
 ''' Openvswitch + OLSRd user-defined service.
 '''
 
