@@ -3,14 +3,14 @@
 OLSR_TABLE=198
 OLSR_DEFAULT_TABLE=199
 SLEEP_TIME=1
-OFCTL_DIR=/home/clauz/openvswitch/utilities
+OFCTL_DIR=/home/user/wmSDN/openvswitch/utilities
 CLIENT_HNA_PATTERN="192\.168\."  # to tell client subnets
 SPECIALMACADDRESS="04:0f:04:0f:04:0f"
 
 #every how many loops Openflow rules from the OLSR table are refreshed
 RECHECK_OLSR_TABLE_COUNTER=30 
 
-export OPENVSWITCH_DIR=/home/clauz/openvswitch
+export OPENVSWITCH_DIR=/home/user/wmSDN/openvswitch
 export OVS_RUNDIR="$(pwd)"
 export OVS_LOGDIR="$(pwd)"
 

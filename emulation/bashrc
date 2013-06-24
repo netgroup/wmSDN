@@ -1,0 +1,4 @@
+corevcmd() {
+                vcmd  -c /tmp/$(ls -lt /tmp/ | grep pycore | head -n 1 | awk '{print $NF}')/$1 -- bash
+}
+

@@ -1,0 +1,5 @@
+custom_services_dir = '/home/user/wmSDN/emulation/core_services'
+openvswitch_dir = '/home/user/wmSDN/openvswitch'
+olsr_dir = '/home/user/wmSDN/olsrd'
+olsrd_dir = '/home/user/wmSDN/olsrd'
+scripts_dir = '/home/user/wmSDN/scripts'

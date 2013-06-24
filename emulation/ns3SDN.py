@@ -48,6 +48,7 @@ import ns.core
 from core.misc import ipaddr 
 from core.misc.ipaddr import MacAddr
 from corens3.obj import Ns3Session, Ns3WifiNet, CoreNs3Net
+import coreconf
 
 # python interactive shell tab autocompletion
 import rlcompleter, readline
@@ -74,14 +75,13 @@ def wifisession(opt):
     numWiredNode=5;
     ns.core.Config.SetDefault("ns3::WifiMacQueue::MaxPacketNumber",ns.core.UintegerValue(100)) 
     session = Ns3Session(persistent=True, duration=opt.duration)
-    session.cfg['openvswitch_dir']='/home/clauz/openvswitch'
-    session.cfg['olsr_dir']='/home/clauz/olsrd'
-    session.cfg['olsrd_dir']='/home/clauz/olsrd'
-    session.cfg['openflow_dir']='/home/clauz/openflow'
+    session.cfg['openvswitch_dir'] = coreconf.openvswitch_dir
+    session.cfg['olsr_dir'] = coreconf.olsr_dir
+    session.cfg['olsrd_dir'] = coreconf.olsrd_dir
     session.name = "ns3SDN"
     session.filename = session.name + ".py"
     session.node_count = str(numWirelessNode + numWiredNode + 1)
-    session.services.importcustom("/home/clauz/.core/myservices")
+    session.services.importcustom(coreconf.custom_services_dir)
     add_to_server(session)
     
     wifi = session.addobj(cls=Ns3WifiNet, name="wlan1", rate="OfdmRate54Mbps")
@@ -93,7 +93,7 @@ def wifisession(opt):
     
     hub1 = session.addobj(cls=pycore.nodes.HubNode, name="hub1")
     hub1.setposition(450,300,0)
-    ptp1 = session.addobj(cls=pycore.nodes.PtpNet, name="ptp1") #client network
+    ptp1 = session.addobj(cls=pycore.nodes.PtpNet, name="ptp1") 
     ptp2 = session.addobj(cls=pycore.nodes.PtpNet, name="ptp2") #controller network
     
     nodes = []
@@ -130,7 +130,7 @@ def wifisession(opt):
     session.services.bootnodeservices(node)
     nodes.append(node)
     
-    node = session.addnode(name = "server")
+    node = session.addnode(name = "client")
     node.newnetif(hub1,["192.168.200.1/24"])
     node.addaddr(0, "192.168.200.11/24")
     node.addaddr(0, "192.168.200.12/24")
@@ -139,7 +139,7 @@ def wifisession(opt):
     node.addaddr(0, "192.168.200.15/24")
     nodes.append(node)
     
-    node = session.addnode(name = "client")
+    node = session.addnode(name = "server")
     node.newnetif(ptp1,["192.168.1.1/24"])
     nodes.append(node)
     
@@ -175,11 +175,11 @@ def wifisession(opt):
     nodes[5].setns3position(400,200,0)
     nodes[5].setposition(400,200,0)
     
-    #server
+    #client
     nodes[6].setns3position(500,300,0)
     nodes[6].setposition(500,300,0)
     
-    #client
+    #server
     nodes[7].setns3position(100,200,0)
     nodes[7].setposition(100,200,0)
     
