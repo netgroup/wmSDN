@@ -45,8 +45,7 @@ cd ..
 
 # prepare POX
 cd pox/ext
-chmod +x ../../controller/*.py
-ln -sv ../../controller/*.py
+ln -sv ../../controller/*.py .
 cd ../pox/openflow
 ln -s ../../../controller/other_modules/of_json.py .
 cd ../lib
@@ -82,7 +81,7 @@ Usage
 =====
 
 # start the emulation
-cd ns-allinone-3.17/ns-3.17/
+cd ~/ns-allinone-3.17/ns-3.17/
 sudo ./waf shell
 cd ~/wmSDN/emulation
 cat coreconf.py #check the paths 
@@ -127,6 +126,8 @@ exit
 
 
 # starting the controller
+cd ~/wmSDN/emulation
+source bashrc
 corevcmd controller
 cd ~/wmSDN/pox
 ./pox.py gw_switch_olsrd
@@ -151,8 +152,7 @@ less ~/iperftestresults/iperf_s_11.log
 # controller moves both flows to the running gateway.
 # At t=360s the gateway comes up again, and the controller 
 # re-balances the flows through both gateways.
-
-# make sure the controller is running
+# make sure the controller is running during the test.
 mkdir ~/failovertestresults
 cd ~/wmSDN/emulation
 # optionally enable TCP Reno
