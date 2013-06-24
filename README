@@ -2,8 +2,168 @@
 Wireless Mesh Software Defined Network
 ======================================
 
-A collection of scripts for creating a wireless mesh network using OpenFlow/OpenvSwitch.
+A collection of scripts for running wireless mesh networks using OpenFlow/OpenvSwitch.
 
 http://netgroup.uniroma2.it/wmSDN/
+
+
+Installation steps (tested on  Ubuntu 12.04)
+============================================
+
+# install CORE:
+wget http://downloads.pf.itd.nrl.navy.mil/core/packages/4.5/core-daemon_4.5-0ubuntu1_precise_amd64.deb
+sudo dpkg -i core-daemon_4.5-0ubuntu1_precise_amd64.deb
+sudo apt-get install -f
+
+
+# get wmSDN
+sudo apt-get install git
+git clone https://github.com/netgroup/wmSDN.git
+cd wmSDN
+git submodule init
+git submodule update
+
+
+# build and install olsrd
+cd olsrd
+make && make libs
+sudo make install_libs
+cd ..
+
+
+# build openvswitch
+cd openvswitch
+sudo apt-get install automake libtool libssl-dev
+./boot.sh
+./configure
+make
+# build the kernel module
+./configure --with-linux=/lib/modules/`uname -r`/build
+make
+cd ..
+
+
+# prepare POX
+cd pox/ext
+chmod +x ../../controller/*.py
+ln -sv ../../controller/*.py
+cd ../pox/openflow
+ln -s ../../../controller/other_modules/of_json.py .
+cd ../lib
+ln -s ../../../controller/other_modules/utill.py .
+cd ../../..
+sudo apt-get install python-networkx
+
+
+# check that the script directories are right 
+grep openvswitch scripts/*.sh
+
+# install iperf
+apt-get install iperf
+
+# install NS3
+cd ~
+wget http://www.nsnam.org/release/ns-allinone-3.17.tar.bz2
+tar xf ns-allinone-3.17.tar.bz2
+cd ns-allinone-3.17/
+sudo apt-get install build-essential
+sudo apt-get install gcc g++ python python-dev
+sudo apt-get install gsl-bin libgsl0-dev libgsl0ldbl
+sudo apt-get install vtun lxc
+sudo apt-get install flex bison libfl-dev
+sudo apt-get install tcpdump
+sudo apt-get install libxml2 libxml2-dev
+sudo apt-get install sqlite sqlite3 libsqlite3-dev
+./build.py --enable-tests
+cd ..
+
+
+Usage
+=====
+
+# start the emulation
+cd ns-allinone-3.17/ns-3.17/
+sudo ./waf shell
+cd ~/wmSDN/emulation
+cat coreconf.py #check the paths 
+# start the actual emulation
+core-cleanup.sh && python -i ./ns3SDN.py -d 7200
+
+# on another shell
+cd ~/wmSDN/emulation
+./starthosts.sh && ./startovs.sh
+
+# now the emulation should be up and running
+
+# TOPOLOGY
+# --------
+#                    (controller)
+#                         |
+# (server)---(n1)  (n2)  (n3)  (n4)  (gw6)-+
+#                         |                +---(client)
+#                       (gw5)--------------+
+#
+#
+
+# to get into one of the nodes, e.g. n2
+source bashrc
+corevcmd n2
+
+# olsr writes into routing table 198
+ip route show table 198
+
+# see the flow table
+source .bashrc
+of_flows
+
+# monitor active flows
+of_watch_active_flows
+
+# get some flow table stats
+of_rule_stats
+
+# exit the node's shell
+exit
+
+
+# starting the controller
+corevcmd controller
+cd ~/wmSDN/pox
+./pox.py gw_switch_olsrd
+
+
+# PROGRESSIVE IPERF TEST
+# a new iperf flow starts every 20 seconds
+# from the client node to the server node
+# try with and without the controller running
+mkdir ~/iperftestresults
+cd ~/wmSDN/emulation
+# optionally enable TCP Reno
+sudo ./tcp_reno.sh
+./progressive_iperf.sh ~/iperftestresults
+less ~/iperftestresults/iperf_s_11.log
+
+
+# GATEWAY FAILOVER TEST
+# two iperf flows are started, each flowing through a
+# different gateway.
+# Then, at t=180s one of the gateway fails and the 
+# controller moves both flows to the running gateway.
+# At t=360s the gateway comes up again, and the controller 
+# re-balances the flows through both gateways.
+
+# make sure the controller is running
+mkdir ~/failovertestresults
+cd ~/wmSDN/emulation
+# optionally enable TCP Reno
+sudo ./tcp_reno.sh
+./failover_test.sh ~/failovertestresults
+less ~/failovertestresults/iperf_s_11.out
+less ~/faiolvertestresults/iperf_s_12.out
+
+
+Contacts
+========
+ * Claudio Pisa <claudio.pisa@uniroma2.it>
 
 
