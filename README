@@ -40,6 +40,8 @@ make
 # build the kernel module
 ./configure --with-linux=/lib/modules/`uname -r`/build
 make
+sudo rmmod openvswitch
+sudo insmod ./datapath/linux/openvswitch.ko
 cd ..
 
 
