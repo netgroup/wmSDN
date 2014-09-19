@@ -6,4 +6,4 @@
 	url = git://github.com/noxrepo/pox.git
 [submodule "openvswitch"]
 	path = openvswitch
-	url = git://openvswitch.org/openvswitch
+	url = https://github.com/openvswitch/ovs.git
