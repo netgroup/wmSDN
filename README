@@ -56,7 +56,10 @@ cd ../../..
 sudo apt-get install python-networkx
 
 
-# check that the script directories are right 
+# check that the directories in the scripts exist and
+# change them as needed.
+# e.g. change all occurrencies of /home/user to the home 
+# directory of the current user
 grep openvswitch scripts/*.sh
 
 # install iperf
